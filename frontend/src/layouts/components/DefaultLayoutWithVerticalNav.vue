@@ -1,28 +1,31 @@
 <script lang="ts" setup>
-import { VerticalNavLayout } from '@layouts'
+import { VerticalNavLayout } from "@layouts";
 
 // Components
-import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
+import NavbarThemeSwitcher from "@/layouts/components/NavbarThemeSwitcher.vue";
 </script>
 
 <template>
   <VerticalNavLayout>
     <!-- 👉 navbar -->
     <template #navbar>
-      <StocksSearchBar />
-
-      <a
-        href="#"
-        target="_blank"
-        rel="noopener noreferrer"
-        style="color: inherit"
+      <div
+        :style="{ width: '100%', height: 'fit-content' }"
+        class="d-flex align-center justify-center pt-4 mt-10"
       >
-        <VIcon
-          class="ms-6 me-4"
-          icon="mdi-github"
-        />
-      </a>
-      <NavbarThemeSwitcher />
+        <StocksSearchBar />
+        <div style="height: 100%" class="d-flex align-center justify-center">
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="color: inherit"
+          >
+            <VIcon class="ms-10 mr-2" icon="mdi-github" />
+          </a>
+          <NavbarThemeSwitcher />
+        </div>
+      </div>
     </template>
 
     <!-- 👉 Pages -->

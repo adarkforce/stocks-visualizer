@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { Ref } from 'vue'
-import { SymbolInfo } from '../types'
+import { Ref } from "vue";
+import { SymbolInfo } from "../types";
 
-const stocks = inject('stocks') as Ref<string[]>
-const seachText = ref('')
-const symbols = inject('symbols') as Ref<string[]>
+const stocks = inject("stocks") as Ref<string[]>;
+const seachText = ref("");
+const symbols = inject("symbols") as Ref<string[]>;
 </script>
 
 <template>
-  <VCol class="mt-10">
+  <VCol>
     <VRow>
       <VAutocomplete
         name="search"
@@ -25,6 +25,7 @@ const symbols = inject('symbols') as Ref<string[]>
         closable-chips
         filter-keys="raw.symbol"
         multiple
+        autocomplete="off"
         :menu-props="{ maxHeight: '300px' }"
       >
         <template v-slot:chip="{ props, item }">

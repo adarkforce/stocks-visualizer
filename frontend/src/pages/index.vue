@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AnalyticsTotalProfitLineCharts from '@/views/dashboards/analytics/AnalyticsTotalProfitLineCharts.vue'
-import TableFixedHeader from '@/views/user-interface/tables/StocksPerfTable.vue'
+import AnalyticsTotalProfitLineCharts from "@/views/dashboards/analytics/AnalyticsTotalProfitLineCharts.vue";
+import TableFixedHeader from "@/views/user-interface/tables/StocksPerfTable.vue";
 </script>
 
 <template>
@@ -10,7 +10,7 @@ import TableFixedHeader from '@/views/user-interface/tables/StocksPerfTable.vue'
     </VCol>
 
     <VCol cols="12">
-      <VCard title="Stocks Data">
+      <VCard title="Stocks Performance">
         <TableFixedHeader />
       </VCard>
     </VCol>
