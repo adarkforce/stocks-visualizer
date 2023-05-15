@@ -26,7 +26,9 @@ const symbols = inject("symbols") as Ref<string[]>;
         filter-keys="raw.symbol"
         multiple
         autocomplete="off"
-        :menu-props="{ maxHeight: '300px' }"
+        :menu-props="{
+          maxHeight: '300px',
+        }"
       >
         <template v-slot:chip="{ props, item }">
           <VChip

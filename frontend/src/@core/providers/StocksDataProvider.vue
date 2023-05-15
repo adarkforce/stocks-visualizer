@@ -14,6 +14,14 @@ const timeperiod = ref<"1y" | "5y" | "max">("1y");
 
 const stocksInfos = ref<StocksInfo[]>([]);
 
+const stocksLut = computed(() => {
+  const lut: any = {};
+  stocks.value.forEach((stock) => {
+    lut[stock.symbol] = stock;
+  });
+  return lut;
+});
+
 const getStockInfo = async (stock: string, timeperiod: "1y" | "5y" | "max") => {
   try {
     const resp = await axios.get(`${process.env.BACKEND_URL}/stocks/infos/`, {
@@ -39,6 +47,7 @@ const getStockInfo = async (stock: string, timeperiod: "1y" | "5y" | "max") => {
       cumulativeReturn: data.cumulative_return,
       annualizedReturn: data.annualized_return,
       annualizedVolatility: data.annualized_volatility,
+      name: stocksLut.value[stock].name,
     };
     return stockInfo;
   } catch (err) {
