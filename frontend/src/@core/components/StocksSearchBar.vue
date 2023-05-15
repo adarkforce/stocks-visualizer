@@ -3,7 +3,6 @@ import { Ref } from "vue";
 import { SymbolInfo } from "../types";
 
 const stocks = inject("stocks") as Ref<string[]>;
-const seachText = ref("");
 const symbols = inject("symbols") as Ref<string[]>;
 </script>
 
@@ -13,7 +12,6 @@ const symbols = inject("symbols") as Ref<string[]>;
       <VAutocomplete
         name="search"
         label="Search Stocks"
-        v-model:search="seachText"
         v-model:model-value="stocks"
         rounded
         prepend-inner-icon="mdi-magnify"

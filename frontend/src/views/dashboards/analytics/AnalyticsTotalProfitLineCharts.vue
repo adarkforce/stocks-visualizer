@@ -14,6 +14,8 @@ const variableTheme = computed(() => {
   return vuetifyTheme.current.value.variables;
 });
 
+const stocksLoading = inject("stocksLoading") as Ref<boolean>;
+
 const stocksInfos = inject("stocksInfos") as Ref<StocksInfo[]>;
 
 const timeperiod = inject("timeperiod") as Ref<"1y" | "5y" | "max">;
@@ -41,6 +43,16 @@ const parsedStocksInfos = computed(() => {
 const chartOptions = computed(() => {
   return {
     chart: {
+      animations: {
+        enabled: false,
+        animateGradually: {
+          enabled: false,
+        },
+        dynamicAnimation: {
+          enabled: false,
+        },
+      },
+
       parentHeightOffset: 0,
       toolbar: { show: true },
       zoom: {
@@ -49,6 +61,9 @@ const chartOptions = computed(() => {
         autoScaleYaxis: true,
       },
       foreColor: currentTheme.value["on-surface"],
+    },
+    dataLabels: {
+      enabled: false,
     },
     legend: {
       labels: {
@@ -72,6 +87,7 @@ const chartOptions = computed(() => {
     tooltip: {
       enabled: true,
       shared: true,
+      followCursor: true,
       fixed: {
         enabled: false,
         position: "topRight",
@@ -130,7 +146,7 @@ const chartOptions = computed(() => {
     stroke: {
       width: 3,
       lineCap: "butt",
-      curve: "smooth",
+      curve: "straight",
     },
     markers: {
       size: 6,
@@ -169,6 +185,7 @@ const chartOptions = computed(() => {
         offsetX: 0,
       },
       axisBorder: { show: true },
+      type: "numeric",
     },
     noData: {
       text: "No data available.",
@@ -186,7 +203,7 @@ const chartOptions = computed(() => {
 </script>
 
 <template>
-  <VCard>
+  <VCard :loading="stocksLoading">
     <VCardTitle class="d-flex align-center">
       <span class="text-h5">Stocks Chart</span>
 
@@ -195,12 +212,10 @@ const chartOptions = computed(() => {
       </span>
     </VCardTitle>
 
-    <VCardText>
-      <VueApexCharts
-        type="line"
-        :options="chartOptions"
-        :series="parsedStocksInfos"
-      />
-    </VCardText>
+    <VueApexCharts
+      type="line"
+      :options="chartOptions"
+      :series="parsedStocksInfos"
+    />
   </VCard>
 </template>

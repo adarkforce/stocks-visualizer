@@ -6,13 +6,17 @@ import { STOCKS_SYMBOLS } from "./data";
 
 const symbols = ref<SymbolInfo[]>([]);
 
-const initialStocks = ["AAPL", "GOOG", "TSLA"];
+const initialStocks = localStorage.getItem("initialStocks")
+  ? JSON.parse(localStorage.getItem("initialStocks")!)
+  : ["AAPL", "GOOG", "MSFT"];
 
 const stocks = ref<SymbolInfo[]>([]);
 
 const timeperiod = ref<"1y" | "5y" | "max">("1y");
 
 const stocksInfos = ref<StocksInfo[]>([]);
+
+const loading = ref<boolean>(false);
 
 const stocksLut = computed(() => {
   const lut: any = {};
@@ -62,6 +66,8 @@ const getStocksList = async () => {
 watchEffect(async () => {
   const newStocksInfos: StocksInfo[] = [];
   const promises: any[] = [];
+  loading.value = true;
+
   stocks.value.forEach((stock) => {
     promises.push(
       (async () => {
@@ -72,8 +78,23 @@ watchEffect(async () => {
       })()
     );
   });
-  await Promise.all(promises);
+
+  try {
+    await Promise.all(promises);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    loading.value = false;
+  }
+
   stocksInfos.value = newStocksInfos;
+});
+
+watchEffect(() => {
+  localStorage.setItem(
+    "initialStocks",
+    JSON.stringify(stocks.value.map((s) => s.symbol))
+  );
 });
 
 onBeforeMount(() => {
@@ -89,6 +110,7 @@ provide("stocksInfos", stocksInfos);
 provide("stocks", stocks);
 provide("symbols", symbols);
 provide("timeperiod", timeperiod);
+provide("stocksLoading", loading);
 </script>
 
 <template>

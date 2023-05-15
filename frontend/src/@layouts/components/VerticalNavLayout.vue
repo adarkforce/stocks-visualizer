@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { useDisplay } from 'vuetify'
-const { lgAndUp, mdAndDown } = useDisplay()
+import { breakpointsVuetify } from "@vueuse/core";
 
-const drawer = ref(lgAndUp.value)
+const breakpoints = useBreakpoints(breakpointsVuetify);
+const smallerThanMd = breakpoints.smaller("md");
 </script>
 
 <template>
   <VAppBar
     app
     flat
-    extended
+    :height="smallerThanMd ? 200 : 100"
     class="px-6 layout-navbar"
     style="background: transparent"
   >
@@ -20,10 +20,7 @@ const drawer = ref(lgAndUp.value)
       <slot />
     </div>
   </VMain>
-  <VFooter
-    app
-    style="background: transparent"
-  >
+  <VFooter app style="background: transparent">
     <slot name="footer" />
   </VFooter>
 </template>

@@ -11,7 +11,7 @@ import NavbarThemeSwitcher from "@/layouts/components/NavbarThemeSwitcher.vue";
     <template #navbar>
       <div
         :style="{ width: '100%', height: 'fit-content' }"
-        class="d-flex align-center justify-center pt-4 mt-10"
+        class="d-flex align-center justify-center pt-4"
       >
         <StocksSearchBar />
         <div style="height: 100%" class="d-flex align-center justify-center">

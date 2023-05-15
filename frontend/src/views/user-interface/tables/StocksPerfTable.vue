@@ -12,6 +12,8 @@ const currentTheme = computed(() => {
   return vuetifyTheme.current.value.colors;
 });
 
+const stocksLoading = inject("stocksLoading") as Ref<boolean>;
+
 const tableData = computed(() => {
   return stocksInfos.value.map((stockInfo) => {
     return {
@@ -42,66 +44,70 @@ const getVolatilityColor = (vol: number) => {
 </script>
 
 <template>
-  <VTable height="250" fixed-header>
-    <thead>
-      <tr>
-        <th class="text-uppercase">Symbol</th>
-        <th class="text-uppercase">Name</th>
-        <th class="text-center text-uppercase">Cumulative Return</th>
-        <th class="text-center text-uppercase">Annualized Return</th>
-        <th class="text-center text-uppercase">Annualized Volatility</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="item in tableData" :key="item.symbol">
-        <td>
-          {{ item.symbol }}
-        </td>
-        <td class="text-no-wrap">
-          {{ item.name }}
-        </td>
-        <td
-          :class="[
-            item.rawCumulativeReturn > 0 ? 'text-success' : 'text-error',
-            'text-center',
-            'text-no-wrap',
-          ]"
-        >
-          <span>
-            <VIcon
-              size="30"
-              :icon="
-                item.rawCumulativeReturn > 0 ? 'mdi-menu-up' : 'mdi-menu-down'
-              "
-            />
-            {{ item.cumulativeReturn }}
-          </span>
-        </td>
-        <td
-          :class="[
-            item.rawAnnualizedReturn > 0 ? 'text-success' : 'text-error',
-            'text-center',
-            'text-no-wrap',
-          ]"
-        >
-          <span>
-            <VIcon
-              size="30"
-              :icon="
-                item.rawAnnualizedReturn > 0 ? 'mdi-menu-up' : 'mdi-menu-down'
-              "
-            />
-            {{ item.annualizedReturn }}
-          </span>
-        </td>
-        <td class="text-center text-no-wrap">
-          <span
-            :style="{ color: getVolatilityColor(item.rawAnnualizedVolatility) }"
+  <VCard :loading="stocksLoading">
+    <VTable height="400" fixed-header>
+      <thead>
+        <tr>
+          <th class="text-uppercase">Symbol</th>
+          <th class="text-uppercase">Name</th>
+          <th class="text-center text-uppercase">Cumulative Return</th>
+          <th class="text-center text-uppercase">Annualized Return</th>
+          <th class="text-center text-uppercase">Annualized Volatility</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in tableData" :key="item.symbol">
+          <td>
+            {{ item.symbol }}
+          </td>
+          <td class="text-no-wrap">
+            {{ item.name }}
+          </td>
+          <td
+            :class="[
+              item.rawCumulativeReturn > 0 ? 'text-success' : 'text-error',
+              'text-center',
+              'text-no-wrap',
+            ]"
           >
-            {{ item.annualizedVolatility }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </VTable>
+            <span>
+              <VIcon
+                size="30"
+                :icon="
+                  item.rawCumulativeReturn > 0 ? 'mdi-menu-up' : 'mdi-menu-down'
+                "
+              />
+              {{ item.cumulativeReturn }}
+            </span>
+          </td>
+          <td
+            :class="[
+              item.rawAnnualizedReturn > 0 ? 'text-success' : 'text-error',
+              'text-center',
+              'text-no-wrap',
+            ]"
+          >
+            <span>
+              <VIcon
+                size="30"
+                :icon="
+                  item.rawAnnualizedReturn > 0 ? 'mdi-menu-up' : 'mdi-menu-down'
+                "
+              />
+              {{ item.annualizedReturn }}
+            </span>
+          </td>
+          <td class="text-center text-no-wrap">
+            <span
+              :style="{
+                color: getVolatilityColor(item.rawAnnualizedVolatility),
+              }"
+            >
+              {{ item.annualizedVolatility }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </VTable>
+  </VCard>
 </template>
