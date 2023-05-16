@@ -20,6 +20,8 @@
     "axios-mock-adapter": "^1.21.2",
     "chart.js": "^3.9.1",
     "jwt-decode": "^3.1.2",
+    "moment": "^2.29.4",
+    "night-vision": "^0.3.2",
     "pinia": "^2.0.22",
     "prismjs": "^1.29.0",
     "sass": "^1.54.9",
