@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { NightVision } from "night-vision";
 import { NightVisionProps } from "night-vision/dist/types";
-import { c } from "unimport/dist/types-43c63a16";
 import type { PropType } from "vue";
 
-let chart: NightVision | null = null;
+let chart = ref<NightVision>();
 
 const props = defineProps({
   nvProps: {
@@ -20,39 +19,36 @@ defineExpose({
 watch(
   () => props.nvProps,
   (val) => {
-    chart!.config = val.config!;
+    chart.value!.config = val.config!;
 
-    chart!.colors = val.colors!;
-    if (val.height) chart!.height = val.height!;
-    if (val.width) chart!.width = val.width!;
+    chart.value!.colors = val.colors!;
+    if (val.height) chart.value!.height = val.height!;
+    if (val.width) chart.value!.width = val.width!;
 
     if (
-      chart!.data?.panes[0]?.overlays?.length &&
-      chart!.data?.panes[0]?.overlays?.length >
+      chart.value!.data?.panes[0]?.overlays?.length &&
+      chart.value!.data?.panes[0]?.overlays?.length >
         val.data!.panes[0].overlays.length
     ) {
-      chart!.data.panes[0].overlays[0].data =
+      chart.value!.data.panes[0].overlays[0].data =
         val.data!.panes[0].overlays[0].data;
-      chart!.data = val.data!;
-      chart!.fullReset();
+      chart.value!.data = val.data!;
+      chart.value!.fullReset();
     } else {
-      chart!.data = val.data!;
-      chart!.update("full");
+      chart.value!.data = val.data!;
+      chart.value!.update("full");
     }
-
   },
-  { deep: true }
+  {
+    deep: true,
+  }
 );
 
 onMounted(() => {
-  try {
-    chart = new NightVision("chart-container", {
-      autoResize: true,
-      ...props.nvProps,
-    });
-  } catch (e) {
-    console.log(e);
-  }
+  chart.value = new NightVision("chart-container", {
+    autoResize: true,
+    ...props.nvProps,
+  });
 });
 </script>
 

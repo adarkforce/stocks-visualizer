@@ -51,6 +51,11 @@ const getStockInfo = async (stock: string, timeperiod: "1y" | "5y" | "max") => {
       cumulativeReturn: data.cumulative_return,
       annualizedReturn: data.annualized_return,
       annualizedVolatility: data.annualized_volatility,
+      sharpeRatio: data.sharpe_ratio,
+      sortinoRatio: data.sortino_ratio,
+      maxDailyReturn: data.max_daily_return,
+      minDailyReturn: data.min_daily_return,
+      maxDrawdown: data.max_drawdown,
       name: stocksLut.value[stock].name,
     };
     return stockInfo;

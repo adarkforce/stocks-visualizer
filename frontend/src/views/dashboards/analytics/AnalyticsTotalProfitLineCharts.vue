@@ -5,7 +5,7 @@ import { useTheme } from "vuetify";
 import NightVisionWrapper from "./NighVisionWrapper.vue";
 import { Data, NightVisionProps, Overlay, Pane } from "night-vision/dist/types";
 import moment from "moment";
-import { breakpointsVuetify } from "@vueuse/core";
+
 const vuetifyTheme = useTheme();
 
 const currentTheme = computed(() => {
@@ -22,13 +22,11 @@ const selectVal = ref<any>(timeperiod.value);
 
 const chartContainer = ref<any>(null);
 
+const chartRef = ref<any>(null);
+
 watchEffect(() => {
   timeperiod.value = selectVal.value.toLocaleLowerCase() as "1y" | "5y" | "max";
 });
-
-const bpoints = useBreakpoints(breakpointsVuetify);
-
-const smallScreen = bpoints.smaller("sm");
 
 const randomHexColor = (min: number, max: number = 255) => {
   // Generate random RGB values within the range of min-max
@@ -50,10 +48,12 @@ const parsedStocksInfos = computed<Data>(() => {
     ...stocksInfos.value.map((stockInfo) => stockInfo.data.length)
   );
   const trimmedData = stocksInfos.value.map((stockInfo) => {
-    return stockInfo.data.slice(stockInfo.data.length - minLength);
+    stockInfo.data.slice(stockInfo.data.length - minLength);
+
+    return stockInfo;
   });
 
-  const data = stocksInfos.value.map(({ data }) =>
+  const data = trimmedData.map(({ data }) =>
     data.map((point) => {
       return [
         moment(point.timestamp, "YYYY-MM-DD").valueOf(),
@@ -71,7 +71,7 @@ const parsedStocksInfos = computed<Data>(() => {
           ? randomHexColor(100)
           : randomHexColor(0, 155);
         return {
-          name: stocksInfos.value[i].symbol,
+          name: s.symbol,
           type: "Spline",
           data: data[i],
           main: false,
@@ -86,6 +86,9 @@ const parsedStocksInfos = computed<Data>(() => {
           A: {
             precision: 2,
           },
+          B: {
+            precision: 1,
+          },
         },
       },
     },
@@ -97,18 +100,18 @@ const parsedStocksInfos = computed<Data>(() => {
   };
 });
 
+watch(timeperiod, () => {
+  chartRef.value?.chart?.fullReset();
+});
+
 const chartOptions = computed<NightVisionProps>(() => ({
   autoResize: true,
   data: parsedStocksInfos.value,
   colors: {
     back: currentTheme.value.surface,
     grid: currentTheme.value["grey-200"],
-    textLG: currentTheme.value["grey-50"],
-    llBack: currentTheme.value["grey-400"],
-    volDw: "#29595555",
-    volUp: "#5ba38d3f",
-    wickDw: "#0c5b3b88",
-    wickUp: "#41a35088",
+    textLG: currentTheme.value["on-surface"],
+    llBack: currentTheme.value["grey-200"],
   },
 }));
 </script>
@@ -124,7 +127,10 @@ const chartOptions = computed<NightVisionProps>(() => ({
         </span>
       </VCardTitle>
       <VCardText>
-        <NightVisionWrapper :nvProps="chartOptions"></NightVisionWrapper>
+        <NightVisionWrapper
+          ref="chartRef"
+          :nvProps="chartOptions"
+        ></NightVisionWrapper>
       </VCardText>
     </VCard>
   </div>

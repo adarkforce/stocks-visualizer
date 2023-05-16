@@ -15,6 +15,11 @@ export interface StocksInfo {
   annualizedVolatility: number;
   data: StocksData[];
   name: string;
+  sharpeRatio: number;
+  sortinoRatio: number;
+  maxDrawdown: number;
+  maxDailyReturn: number;
+  minDailyReturn: number;
 }
 
 export interface SymbolInfo {
