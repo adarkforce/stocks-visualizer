@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpRequest, HttpResponseBadRequest
 import simplejson
+from stocks.types import Timespan
 from stocks.utils import StocksInfoParser
 from stocks.env import ALPHA_VANTAGE_API_KEY
 import pandas as pd
@@ -22,7 +23,7 @@ def stocks_list(request: HttpRequest):
 def stocks_infos(request: HttpRequest):
     stock = request.GET.get('stock')
     stock = unquote(stock)
-    timeperiod = request.GET.get('timeperiod')
+    timeperiod: Timespan = request.GET.get('timeperiod')
     if timeperiod is None:
         timeperiod = 'max'
     if stock is None:
