@@ -3,6 +3,7 @@ import axios from "axios";
 import { provide, ref, watchEffect } from "vue";
 import { StocksInfo, SymbolInfo } from "../types";
 import { STOCKS_SYMBOLS } from "./data";
+import { LRU } from "../utils";
 
 const symbols = ref<SymbolInfo[]>([]);
 
@@ -26,8 +27,13 @@ const stocksLut = computed(() => {
   return lut;
 });
 
+const lru = new LRU<string, StocksInfo>(7);
+
 const getStockInfo = async (stock: string, timeperiod: "1y" | "5y" | "max") => {
   try {
+    if (lru.get(`${stock}-${timeperiod}`)) {
+      return lru.get(`${stock}-${timeperiod}`);
+    }
     const resp = await axios.get(`${process.env.BACKEND_URL}/stocks/infos/`, {
       params: {
         stock,
@@ -58,6 +64,7 @@ const getStockInfo = async (stock: string, timeperiod: "1y" | "5y" | "max") => {
       maxDrawdown: data.max_drawdown,
       name: stocksLut.value[stock].name,
     };
+    lru.put(`${stock}-${timeperiod}`, stockInfo);
     return stockInfo;
   } catch (err) {
     console.log(err);

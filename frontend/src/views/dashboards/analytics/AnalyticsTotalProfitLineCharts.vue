@@ -5,6 +5,7 @@ import { useTheme } from "vuetify";
 import NightVisionWrapper from "./NighVisionWrapper.vue";
 import { Data, NightVisionProps, Overlay, Pane } from "night-vision/dist/types";
 import moment from "moment";
+import { randomHexColor } from "@/@core/utils";
 
 const vuetifyTheme = useTheme();
 
@@ -28,27 +29,23 @@ watchEffect(() => {
   timeperiod.value = selectVal.value.toLocaleLowerCase() as "1y" | "5y" | "max";
 });
 
-const randomHexColor = (min: number, max: number = 255) => {
-  // Generate random RGB values within the range of min-max
-
-  const red = Math.floor(Math.random() * (max - min)) + min;
-  const green = Math.floor(Math.random() * (max - min)) + min;
-  const blue = Math.floor(Math.random() * (max - min)) + min;
-
-  // Convert the RGB values to a hex color
-  const hexColor = `#${((1 << 24) | (red << 16) | (green << 8) | blue)
-    .toString(16)
-    .slice(1)}`;
-
-  return hexColor;
-};
+const stocksColors = computed(() => {
+  return stocksInfos.value.map(() =>
+    vuetifyTheme.current.value.dark
+      ? randomHexColor(100)
+      : randomHexColor(0, 155)
+  );
+});
 
 const parsedStocksInfos = computed<Data>(() => {
   const minLength = Math.min(
     ...stocksInfos.value.map((stockInfo) => stockInfo.data.length)
   );
   const trimmedData = stocksInfos.value.map((stockInfo) => {
-    stockInfo.data.slice(stockInfo.data.length - minLength);
+    stockInfo.data.slice(
+      stockInfo.data.length - minLength,
+      stockInfo.data.length
+    );
 
     return stockInfo;
   });
@@ -67,16 +64,13 @@ const parsedStocksInfos = computed<Data>(() => {
       id: 0,
       uuid: "main",
       overlays: trimmedData.map((s, i) => {
-        const candlestickColor = vuetifyTheme.current.value.dark
-          ? randomHexColor(100)
-          : randomHexColor(0, 155);
         return {
           name: s.symbol,
           type: "Spline",
           data: data[i],
           main: false,
           props: {
-            color: candlestickColor,
+            color: stocksColors.value[i],
             lineWidth: 1,
           } as Object,
         } as Overlay;
@@ -85,9 +79,6 @@ const parsedStocksInfos = computed<Data>(() => {
         scales: {
           A: {
             precision: 2,
-          },
-          B: {
-            precision: 1,
           },
         },
       },
@@ -100,10 +91,6 @@ const parsedStocksInfos = computed<Data>(() => {
   };
 });
 
-watch(timeperiod, () => {
-  chartRef.value?.chart?.fullReset();
-});
-
 const chartOptions = computed<NightVisionProps>(() => ({
   autoResize: true,
   data: parsedStocksInfos.value,
@@ -114,6 +101,33 @@ const chartOptions = computed<NightVisionProps>(() => ({
     llBack: currentTheme.value["grey-200"],
   },
 }));
+
+const updateRange = () => {
+  if (!chartRef.value || !chartRef.value.chart || !parsedStocksInfos.value)
+    return;
+  const maxLenght = parsedStocksInfos.value.panes[0]?.overlays[0]?.data?.length;
+  if (!maxLenght) return;
+
+  let y = 1;
+  if (timeperiod.value === "5y") y = 5;
+  else if (timeperiod.value === "max") {
+    y = 1000;
+  }
+
+  if (maxLenght > 0) {
+    chartRef.value.chart!.range = [Math.max(0, maxLenght - 252 * y), maxLenght];
+  }
+};
+
+watch(
+  chartOptions,
+  () => {
+    updateRange();
+  },
+  {
+    flush: "post",
+  }
+);
 </script>
 
 <template>

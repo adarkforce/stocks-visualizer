@@ -19,28 +19,11 @@ defineExpose({
 watch(
   () => props.nvProps,
   (val) => {
-    chart.value!.config = val.config!;
-
-    chart.value!.colors = val.colors!;
+    if (val.config) chart.value!.config = val.config!;
+    if (val.colors) chart.value!.colors = val.colors!;
     if (val.height) chart.value!.height = val.height!;
     if (val.width) chart.value!.width = val.width!;
-
-    if (
-      chart.value!.data?.panes[0]?.overlays?.length &&
-      chart.value!.data?.panes[0]?.overlays?.length >
-        val.data!.panes[0].overlays.length
-    ) {
-      chart.value!.data.panes[0].overlays[0].data =
-        val.data!.panes[0].overlays[0].data;
-      chart.value!.data = val.data!;
-      chart.value!.fullReset();
-    } else {
-      chart.value!.data = val.data!;
-      chart.value!.update("full");
-    }
-  },
-  {
-    deep: true,
+    if (val.data) chart.value!.data = val.data!;
   }
 );
 
