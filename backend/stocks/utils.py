@@ -15,7 +15,6 @@ class StocksInfoParser:
         dataframe = dataframe.set_index('timestamp_index')
         dataframe.sort_values(by="timestamp_index",
                               ascending=True, inplace=True)
-        dataframe.dropna(inplace=True)
 
         def calculate_data(dataframe):
 
@@ -29,20 +28,13 @@ class StocksInfoParser:
         if timeperiod == 'max':
             cumulative_returns, annualized_return, annualized_volatility = calculate_data(
                 dataframe)
-            dataframe = self.get_yearly_data(dataframe)
         if timeperiod == '5y':
-            dataframe = dataframe.last("50M")
             cumulative_returns, annualized_return, annualized_volatility = calculate_data(
-                dataframe)
-            dataframe = self.get_monthly_data(dataframe)
+                dataframe.last("50M"))
         elif timeperiod == '1y':
-            dataframe = dataframe.last("12M")
             cumulative_returns, annualized_return, annualized_volatility = calculate_data(
-                dataframe)
-            dataframe = self.get_weekly_data(dataframe)
-        else:
-            dataframe = self.get_weekly_data(dataframe)
-        dataframe.dropna(inplace=True)
+                dataframe.last("12M"))
+
         return {
             "length": lenght,
             "data": self.get_json(dataframe),
@@ -50,12 +42,6 @@ class StocksInfoParser:
             "annualized_return": annualized_return,
             "annualized_volatility": annualized_volatility
         }
-
-    def get_yearly_data(self, dataframe):
-        return dataframe.resample('Y').last()
-
-    def get_monthly_data(self, dataframe):
-        return dataframe.resample('M').last()
 
     def get_cumulative_return(self, dataframe):
         # Calculate daily returns
@@ -81,9 +67,6 @@ class StocksInfoParser:
         annualized_volatility = daily_returns.std() * np.sqrt(TRADING_DAYS)
 
         return annualized_volatility
-
-    def get_weekly_data(self, dataframe):
-        return dataframe.resample('W').last()
 
     def get_json(self, dataframe):
         return dataframe.to_dict(orient='records')
