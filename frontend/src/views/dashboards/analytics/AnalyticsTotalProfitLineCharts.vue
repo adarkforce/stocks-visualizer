@@ -29,12 +29,21 @@ watchEffect(() => {
   timeperiod.value = selectVal.value.toLocaleLowerCase() as "1y" | "5y" | "max";
 });
 
+const stockColorMap: Map<string, string> = new Map();
+
 const stocksColors = computed(() => {
-  return stocksInfos.value.map(() =>
-    vuetifyTheme.current.value.dark
-      ? randomHexColor(100)
-      : randomHexColor(0, 155)
-  );
+  return stocksInfos.value.map((s) => {
+    let stockColor = stockColorMap.get(
+      s.symbol + vuetifyTheme.current.value.dark
+    );
+    if (!stockColor) {
+      stockColor = vuetifyTheme.current.value.dark
+        ? randomHexColor(100)
+        : randomHexColor(0, 155);
+      stockColorMap.set(s.symbol + vuetifyTheme.current.value.dark, stockColor);
+    }
+    return stockColor;
+  });
 });
 
 const parsedStocksInfos = computed<Data>(() => {
