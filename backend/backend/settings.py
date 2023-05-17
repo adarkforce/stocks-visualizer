@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+from stocks.env import CURRENT_HOST, PY_DEBUG
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,16 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-x6f@u5+e9vgq68*x4dkn$+&p!=7h%1@(29+#4(n9)_g&om8=w8"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = PY_DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [CURRENT_HOST]
 
 CACHES = {
-    # "default": {
-    #     "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
-    #     "LOCATION": "127.0.0.1:11211",
-    #
-    # },
     "default": {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
         "LOCATION": "my_cache_table",
@@ -136,5 +133,5 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:5173"]
+# CORS_ORIGIN_WHITELIST = ["http://localhost:5173"]
 CORS_ORIGIN_ALLOW_ALL = True
