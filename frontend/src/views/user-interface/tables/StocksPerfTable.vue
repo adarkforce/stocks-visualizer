@@ -55,7 +55,7 @@ const interpolateColor = (col1: string, col2: string, vol: number) => {
 
 <template>
   <VCard :loading="stocksLoading">
-    <VTable fixedHeader>
+    <VTable height="400" fixedHeader>
       <thead>
         <tr>
           <th class="text-uppercase text-subtitle-2 font-weight-bold">
@@ -109,7 +109,7 @@ const interpolateColor = (col1: string, col2: string, vol: number) => {
           <td>
             {{ item.symbol }}
           </td>
-          <td class="text-no-wrap text-body-1">
+          <td class="text-no-wrap text-caption">
             {{ item.name }}
           </td>
           <td
@@ -118,7 +118,7 @@ const interpolateColor = (col1: string, col2: string, vol: number) => {
               item.rawCumulativeReturn > 0 ? 'text-success' : 'text-error',
               'text-center',
               'text-no-wrap',
-              'text-body-1',
+              'text-body-2',
             ]"
           >
             <span>
@@ -137,7 +137,7 @@ const interpolateColor = (col1: string, col2: string, vol: number) => {
               item.rawAnnualizedReturn > 0 ? 'text-success' : 'text-error',
               'text-center',
               'text-no-wrap',
-              'text-body-1',
+              'text-body-2',
             ]"
           >
             <span>
@@ -150,7 +150,7 @@ const interpolateColor = (col1: string, col2: string, vol: number) => {
               {{ item.annualizedReturn }}
             </span>
           </td>
-          <td class="text-center text-no-wrap text-body-1">
+          <td class="text-center text-no-wrap text-body-2">
             <span
               v-if="!!item.rawAnnualizedVolatility"
               :style="{
@@ -164,7 +164,7 @@ const interpolateColor = (col1: string, col2: string, vol: number) => {
               {{ item.annualizedVolatility }}
             </span>
           </td>
-          <td class="text-center text-no-wrap text-body-1">
+          <td class="text-center text-no-wrap text-body-2">
             <span
               v-if="!!item.rawMaxDrawdown"
               :style="{
@@ -178,7 +178,7 @@ const interpolateColor = (col1: string, col2: string, vol: number) => {
               {{ item.maxDrawdown }}
             </span>
           </td>
-          <td class="text-center text-no-wrap text-body-1">
+          <td class="text-center text-no-wrap text-body-2">
             <span
               v-if="!!item.rawSharpeRatio"
               :style="{
@@ -192,7 +192,7 @@ const interpolateColor = (col1: string, col2: string, vol: number) => {
               {{ item.sharpeRatio }}
             </span>
           </td>
-          <td class="text-center text-no-wrap text-body-1">
+          <td class="text-center text-no-wrap text-body-2">
             <span
               v-if="!!item.rawSortinoRatio"
               :style="{
@@ -206,7 +206,7 @@ const interpolateColor = (col1: string, col2: string, vol: number) => {
               {{ item.sortinoRatio }}
             </span>
           </td>
-          <td class="text-center text-no-wrap text-body-1">
+          <td class="text-center text-no-wrap text-body-2">
             <span
               v-if="!!item.rawMinDailyReturn"
               :style="{
@@ -220,7 +220,7 @@ const interpolateColor = (col1: string, col2: string, vol: number) => {
               {{ item.minDailyReturn }}
             </span>
           </td>
-          <td class="text-center text-no-wrap text-body-1">
+          <td class="text-center text-no-wrap text-body-2">
             <span
               v-if="!!item.rawMaxDailyReturn"
               :style="{
