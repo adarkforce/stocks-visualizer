@@ -5,3 +5,4 @@ frontend/node_modules
 .vscode/launch.json
 
 backend/db.sqlite3
+frontend/dist

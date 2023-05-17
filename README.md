@@ -4,7 +4,9 @@ A web page displaying stocks performaces, written in [Vue.js](https://vuejs.org/
 
 Supports technical analysis of the selected stocks for 1, 5, and max years, server and client side caching to improve loading speed and dynamic chart range calculation.
 
-## Preview 
+# [** LINK TO LIVE WEBSITE **](https://stocks-visualizer.web.app/)
+
+## Preview
 
 ![Stocks Chart](https://raw.githubusercontent.com/adarkforce/stocks-visualizer/master/images/Stocks%20Performance-1.png?token=GHSAT0AAAAAAB7VJGPFUJR6KZWVJTBLENTCZDECKLQ "Stocks Chart")
 

@@ -16,7 +16,7 @@ import NavbarThemeSwitcher from "@/layouts/components/NavbarThemeSwitcher.vue";
         <StocksSearchBar />
         <div style="height: 100%" class="d-flex align-center justify-center">
           <a
-            href="#"
+            href="https://github.com/adarkforce/stocks-visualizer"
             target="_blank"
             rel="noopener noreferrer"
             style="color: inherit"

@@ -7,8 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    CardStatisticsVertical: typeof import('./src/@core/components/CardStatisticsVertical.vue')['default']
-    copy: typeof import('./src/@core/components/CardStatisticsVertical copy.vue')['default']
     ErrorHeader: typeof import('./src/@core/components/ErrorHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
