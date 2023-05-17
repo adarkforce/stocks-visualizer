@@ -4,6 +4,22 @@ import { SymbolInfo } from "../types";
 
 const stocks = inject("stocks") as Ref<string[]>;
 const symbols = inject("symbols") as Ref<string[]>;
+
+const perPage = ref(10);
+
+const page = ref(1);
+
+const filteredSymbols = computed(() => {
+  return symbols.value.slice(0, page.value * perPage.value);
+});
+
+const onIntersect = () => {
+  page.value++;
+};
+
+const onFocused = () => {
+  page.value = 1;
+};
 </script>
 
 <template>
@@ -19,11 +35,12 @@ const symbols = inject("symbols") as Ref<string[]>;
         class="flex-wrap"
         :style="{ maxWidth: 'auto', minWidth: '200px' }"
         chips
-        :items="symbols"
+        :items="filteredSymbols"
         closable-chips
         filter-keys="raw.symbol"
         multiple
         autocomplete="off"
+        @update:focused="onFocused"
         :menu-props="{
           maxHeight: '300px',
         }"
@@ -42,8 +59,18 @@ const symbols = inject("symbols") as Ref<string[]>;
             v-bind="props"
             :title="((item as any).raw as SymbolInfo).symbol"
             :subtitle="((item as any).raw as SymbolInfo).name"
-          ></VListItem> </template
-      ></VAutocomplete>
+          ></VListItem>
+        </template>
+        <template v-slot:append-item>
+          <VListItem
+            key="sfg"
+            height="100"
+            v-intersect="onIntersect"
+            class="p-4"
+          >
+          </VListItem>
+        </template>
+      </VAutocomplete>
     </VRow>
   </VCol>
 </template>
