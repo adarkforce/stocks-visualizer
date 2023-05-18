@@ -42,7 +42,7 @@ const sources = {
         // Custom JSON file
         // 'json/gg.json',
         // Iconify JSON file (@iconify/json is a package name, /json/ is directory where files are, then filename)
-        require.resolve('@iconify-json/mdi/icons.json'),
+        require.resolve("@iconify-json/mdi/icons.json"),
         // Custom file with only few icons
         // {
         //   filename: require.resolve('@iconify-json/line-md/icons.json'),
@@ -58,11 +58,11 @@ const sources = {
 };
 // Iconify component (this changes import statement in generated file)
 // Available options: '@iconify/react' for React, '@iconify/vue' for Vue 3, '@iconify/vue2' for Vue 2, '@iconify/svelte' for Svelte
-const component = '@iconify/vue';
+const component = "@iconify/vue";
 // Set to true to use require() instead of import
 const commonJS = false;
 // File to save bundle to
-const target = 'src/@iconify/icons-bundle.js';
+const target = "src/@iconify/icons-bundle.js";
 /**
  * Do stuff!
  */
@@ -103,10 +103,10 @@ const target = 'src/@iconify/icons-bundle.js';
         for (let i = 0; i < sources.json.length; i++) {
             const item = sources.json[i];
             // Load icon set
-            const filename = typeof item === 'string' ? item : item.filename;
-            let content = JSON.parse(await fs_1.promises.readFile(filename, 'utf8'));
+            const filename = typeof item === "string" ? item : item.filename;
+            let content = JSON.parse(await fs_1.promises.readFile(filename, "utf8"));
             // Filter icons
-            if (typeof item !== 'string' && item.icons?.length) {
+            if (typeof item !== "string" && item.icons?.length) {
                 const filteredContent = (0, utils_1.getIcons)(content, item.icons);
                 if (!filteredContent)
                     throw new Error(`Cannot find required icons in ${filename}`);
@@ -131,7 +131,7 @@ const target = 'src/@iconify/icons-bundle.js';
             });
             // Validate, clean up, fix palette and optimise
             await iconSet.forEach(async (name, type) => {
-                if (type !== 'icon')
+                if (type !== "icon")
                     return;
                 // Get SVG instance for parsing
                 const svg = iconSet.toSVG(name);
@@ -148,11 +148,11 @@ const target = 'src/@iconify/icons-bundle.js';
                         // Replace color with currentColor, add if missing
                         // If icon is not monotone, remove this code
                         await (0, tools_1.parseColors)(svg, {
-                            defaultColor: 'currentColor',
+                            defaultColor: "currentColor",
                             callback: (attr, colorStr, color) => {
                                 return !color || (0, tools_1.isEmptyColor)(color)
                                     ? colorStr
-                                    : 'currentColor';
+                                    : "currentColor";
                             },
                         });
                     }
@@ -175,9 +175,9 @@ const target = 'src/@iconify/icons-bundle.js';
         }
     }
     // Save to file
-    await fs_1.promises.writeFile(target, bundle, 'utf8');
+    await fs_1.promises.writeFile(target, bundle, "utf8");
     console.log(`Saved ${target} (${bundle.length} bytes)`);
-})().catch(err => {
+})().catch((err) => {
     console.error(err);
 });
 /**
@@ -185,14 +185,14 @@ const target = 'src/@iconify/icons-bundle.js';
  */
 function removeMetaData(iconSet) {
     const props = [
-        'info',
-        'chars',
-        'categories',
-        'themes',
-        'prefixes',
-        'suffixes',
+        "info",
+        "chars",
+        "categories",
+        "themes",
+        "prefixes",
+        "suffixes",
     ];
-    props.forEach(prop => {
+    props.forEach((prop) => {
         delete iconSet[prop];
     });
 }
@@ -201,14 +201,12 @@ function removeMetaData(iconSet) {
  */
 function organizeIconsList(icons) {
     const sorted = Object.create(null);
-    icons.forEach(icon => {
+    icons.forEach((icon) => {
         const item = (0, utils_1.stringToIcon)(icon);
         if (!item)
             return;
         const prefix = item.prefix;
-        const prefixList = sorted[prefix]
-            ? sorted[prefix]
-            : (sorted[prefix] = []);
+        const prefixList = sorted[prefix] ? sorted[prefix] : (sorted[prefix] = []);
         const name = item.name;
         if (!prefixList.includes(name))
             prefixList.push(name);

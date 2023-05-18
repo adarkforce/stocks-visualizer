@@ -3,6 +3,7 @@ import { VerticalNavLayout } from "@layouts";
 
 // Components
 import NavbarThemeSwitcher from "@/layouts/components/NavbarThemeSwitcher.vue";
+import StocksSearchBar from "@components/StocksSearchBar.vue";
 </script>
 
 <template>

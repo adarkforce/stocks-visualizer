@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { StocksInfo } from "@/@core/types";
-import { hexToRgb } from "@/@layouts/utils";
+import { StocksInfo } from "@core/types";
+import { hexToRgb } from "@core/utils";
 import { Ref } from "vue";
 import { useTheme } from "vuetify/lib/framework.mjs";
 

@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { useTheme } from 'vuetify'
-import misc404 from '@/assets/images/pages/404.png'
-import miscMaskDark from '@/assets/images/pages/misc-mask-dark.png'
-import miscMaskLight from '@/assets/images/pages/misc-mask-light.png'
-import tree from '@/assets/images/pages/tree.png'
+import { useTheme } from "vuetify";
+import misc404 from "@/assets/images/pages/404.png";
+import miscMaskDark from "@/assets/images/pages/misc-mask-dark.png";
+import miscMaskLight from "@/assets/images/pages/misc-mask-light.png";
+import tree from "@/assets/images/pages/tree.png";
 
-const vuetifyTheme = useTheme()
+const vuetifyTheme = useTheme();
 const authThemeMask = computed(() => {
-  return vuetifyTheme.global.name.value === 'light'
+  return vuetifyTheme.global.name.value === "light"
     ? miscMaskLight
-    : miscMaskDark
-})
+    : miscMaskDark;
+});
 </script>
 
 <template>
@@ -23,30 +23,14 @@ const authThemeMask = computed(() => {
 
     <!-- 👉 Image -->
     <div class="misc-avatar w-100 text-center">
-      <VImg
-        :src="misc404"
-        alt="Coming Soon"
-        :max-width="800"
-        class="mx-auto"
-      />
-      <VBtn
-        to="/"
-        class="mt-10"
-      >
-        Back to Home
-      </VBtn>
+      <VImg :src="misc404" alt="Coming Soon" :max-width="800" class="mx-auto" />
+      <VBtn to="/" class="mt-10"> Back to Home </VBtn>
     </div>
 
     <!-- 👉 Footer -->
-    <VImg
-      :src="tree"
-      class="misc-footer-tree d-none d-md-block"
-    />
+    <VImg :src="tree" class="misc-footer-tree d-none d-md-block" />
 
-    <VImg
-      :src="authThemeMask"
-      class="misc-footer-img d-none d-md-block"
-    />
+    <VImg :src="authThemeMask" class="misc-footer-img d-none d-md-block" />
   </div>
 </template>
 

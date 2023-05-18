@@ -4,5 +4,8 @@
   },
   "python.autoComplete.extraPaths": ["./backend"],
 
-  "python.formatting.provider": "none"
+  "python.formatting.provider": "none",
+  "python.analysis.extraPaths": [
+    "./backend"
+  ]
 }
