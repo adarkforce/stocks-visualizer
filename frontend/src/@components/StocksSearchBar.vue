@@ -1,16 +1,33 @@
 <script setup lang="ts">
 import { Ref } from "vue";
 import { SymbolInfo } from "@core/types";
+import Fuse from "fuse.js";
 
-const stocks = inject("stocks") as Ref<string[]>;
+const DEFAULT_AUTOCOMPLETE_ITEMS_PER_PAGE = 10;
+
+const stocks = inject("stocks") as Ref<SymbolInfo[]>;
 const symbols = inject("symbols") as Ref<string[]>;
 
-const perPage = ref(10);
+const search = ref("");
+
+let fuse = computed(() => {
+  return new Fuse(symbols.value, {
+    keys: ["symbol", "name"],
+    threshold: 0.9,
+    shouldSort: true,
+  });
+});
+
+const perPage = ref(DEFAULT_AUTOCOMPLETE_ITEMS_PER_PAGE);
 
 const page = ref(1);
 
 const filteredSymbols = computed(() => {
-  return symbols.value.slice(0, page.value * perPage.value);
+  if (!search.value) return symbols.value.slice(0, perPage.value * page.value);
+  return fuse.value
+    .search(search.value)
+    .map((r) => r.item)
+    .slice(0, perPage.value * page.value);
 });
 
 const onIntersect = () => {
@@ -18,6 +35,11 @@ const onIntersect = () => {
 };
 
 const onFocused = () => {
+  search.value = "";
+  page.value = 1;
+};
+
+const onSearch = () => {
   page.value = 1;
 };
 </script>
@@ -29,19 +51,23 @@ const onFocused = () => {
         name="search"
         label="Search Stocks"
         v-model:model-value="stocks"
+        v-model:search="search"
         rounded
         prepend-inner-icon="mdi-magnify"
         density="comfortable"
         class="flex-wrap"
         :style="{ maxWidth: 'auto', minWidth: '200px' }"
         chips
+        no-filter
         :items="filteredSymbols"
         closable-chips
-        filter-keys="raw.symbol"
+        return-object
         multiple
         autocomplete="off"
         @update:focused="onFocused"
+        @update:search="onSearch"
         :menu-props="{
+          minHeight: 'auto',
           maxHeight: '300px',
         }"
       >
@@ -62,13 +88,7 @@ const onFocused = () => {
           ></VListItem>
         </template>
         <template v-slot:append-item>
-          <VListItem
-            key="sfg"
-            height="100"
-            v-intersect="onIntersect"
-            class="p-4"
-          >
-          </VListItem>
+          <div key="xxxxxxxxxxx" v-intersect="onIntersect"></div>
         </template>
       </VAutocomplete>
     </VRow>

@@ -17,6 +17,7 @@
     "@vueuse/core": "^8.9.4",
     "axios": "^1.4.0",
     "axios-mock-adapter": "^1.21.2",
+    "fuse.js": "^6.6.2",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "night-vision": "^0.3.2",

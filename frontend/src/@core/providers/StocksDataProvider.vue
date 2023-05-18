@@ -71,8 +71,19 @@ const getStockInfo = async (stock: string, timeperiod: "1y" | "5y" | "max") => {
   }
 };
 
-const getStocksList = async () => {
-  return STOCKS_SYMBOLS;
+const getStocksList = async (): Promise<SymbolInfo[]> => {
+  try {
+    const res = await axios.get(`${process.env.BACKEND_URL}/stocks/symbols/`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+  return STOCKS_SYMBOLS.map((s) => {
+    return {
+      symbol: s.symbol,
+      name: s.name,
+    } as SymbolInfo;
+  });
 };
 
 watchEffect(async () => {

@@ -61,10 +61,7 @@ const parsedStocksInfos = computed<Data>(() => {
 
   const data = trimmedData.map(({ data }) =>
     data.map((point) => {
-      return [
-        moment(point.timestamp, "YYYY-MM-DD").valueOf(),
-        Math.trunc(point.adjClose * 100) / 100,
-      ];
+      return [moment(point.timestamp, "YYYY-MM-DD").valueOf(), point.adjClose];
     })
   );
 
@@ -80,7 +77,7 @@ const parsedStocksInfos = computed<Data>(() => {
           main: false,
           props: {
             color: stocksColors.value[i],
-            lineWidth: 1,
+            lineWidth: 2,
           } as Object,
         } as Overlay;
       }),
@@ -96,7 +93,7 @@ const parsedStocksInfos = computed<Data>(() => {
 
   return {
     indexBased: true,
-    panes: panes,
+    panes: trimmedData.length ? panes : [],
   };
 });
 
@@ -112,8 +109,15 @@ const chartOptions = computed<NightVisionProps>(() => ({
 }));
 
 const updateRange = () => {
-  if (!chartRef.value || !chartRef.value.chart || !parsedStocksInfos.value)
+  if (
+    !chartRef.value ||
+    !chartRef.value.chart ||
+    !parsedStocksInfos.value ||
+    parsedStocksInfos.value.panes.length === 0 ||
+    parsedStocksInfos.value.panes[0].overlays.length === 0
+  )
     return;
+
   const maxLenght = parsedStocksInfos.value.panes[0]?.overlays[0]?.data?.length;
   if (!maxLenght) return;
 

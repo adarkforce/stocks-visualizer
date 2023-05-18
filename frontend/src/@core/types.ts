@@ -25,9 +25,4 @@ export interface StocksInfo {
 export interface SymbolInfo {
   symbol: string;
   name: string;
-  lastsale: string;
-  netchange: string;
-  pctchange: string;
-  marketCap: string;
-  url: string;
 }
