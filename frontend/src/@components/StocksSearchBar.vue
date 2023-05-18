@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Ref } from "vue";
-import { SymbolInfo } from "../types";
+import { SymbolInfo } from "@core/types";
 
 const stocks = inject("stocks") as Ref<string[]>;
 const symbols = inject("symbols") as Ref<string[]>;

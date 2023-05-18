@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AnalyticsTotalProfitLineCharts from "@/views/dashboards/analytics/AnalyticsTotalProfitLineCharts.vue";
-import TableFixedHeader from "@/views/user-interface/tables/StocksPerfTable.vue";
+import AnalyticsTotalProfitLineCharts from "@components/AnalyticsTotalProfitLineCharts.vue";
+import TableFixedHeader from "@components/StocksPerfTable.vue";
 </script>
 
 <template>

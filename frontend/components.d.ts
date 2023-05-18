@@ -8,9 +8,9 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ErrorHeader: typeof import('./src/@core/components/ErrorHeader.vue')['default']
+    NighVisionWrapper: typeof import('./src/@core/components/NighVisionWrapper.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    StocksSearchBar: typeof import('./src/@core/components/StocksSearchBar.vue')['default']
     ThemeSwitcher: typeof import('./src/@core/components/ThemeSwitcher.vue')['default']
   }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import StocksDataProvider from './@core/providers/StocksDataProvider.vue'
+import StocksDataProvider from "./@core/providers/StocksDataProvider.vue";
 </script>
 
 <template>

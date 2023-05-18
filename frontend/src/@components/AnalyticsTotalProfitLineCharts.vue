@@ -2,7 +2,7 @@
 import { StocksInfo } from "@/@core/types";
 import { Ref } from "vue";
 import { useTheme } from "vuetify";
-import NightVisionWrapper from "./NighVisionWrapper.vue";
+import NightVisionWrapper from "@core/components/NighVisionWrapper.vue";
 import { Data, NightVisionProps, Overlay, Pane } from "night-vision/dist/types";
 import moment from "moment";
 import { randomHexColor } from "@/@core/utils";

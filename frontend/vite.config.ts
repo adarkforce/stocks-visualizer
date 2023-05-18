@@ -43,6 +43,9 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
       "@core": fileURLToPath(new URL("./src/@core", import.meta.url)),
       "@layouts": fileURLToPath(new URL("./src/@layouts", import.meta.url)),
+      "@components": fileURLToPath(
+        new URL("./src/@components", import.meta.url)
+      ),
       "@configured-variables": fileURLToPath(
         new URL("./src/styles/variables/_template.scss", import.meta.url)
       ),

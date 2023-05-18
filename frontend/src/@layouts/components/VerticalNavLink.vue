@@ -1,29 +1,20 @@
 <script lang="ts" setup>
-import type { NavLink } from '@layouts/types';
-import { getComputedNavLinkToProp } from '@layouts/utils';
+import type { NavLink } from "@layouts/types";
+import { getComputedNavLinkToProp } from "@layouts/utils";
 
-const props = defineProps<{ item: NavLink}>()
+const props = defineProps<{ item: NavLink }>();
 </script>
 
 <template>
-  <li
-    class="nav-link"
-    :class="{ disabled: item.disable }"
-  >
+  <li class="nav-link" :class="{ disabled: item.disable }">
     <Component
       :is="item.to ? 'RouterLink' : 'a'"
       v-bind="getComputedNavLinkToProp(item)"
     >
-      <VIcon
-        v-bind="item.icon"
-        class="nav-item-icon"
-      />
+      <VIcon v-bind="item.icon" class="nav-item-icon" />
       <TransitionGroup name="transition-slide-x">
         <!-- 👉 Title -->
-        <span
-          key="title"
-          class="nav-item-title"
-        >
+        <span key="title" class="nav-item-title">
           {{ item.title }}
         </span>
 

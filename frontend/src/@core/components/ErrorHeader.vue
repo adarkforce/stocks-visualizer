@@ -1,11 +1,11 @@
 <script setup lang="ts">
 interface Props {
-  errorCode: string
-  errorTitle: string
-  errorDescription: string
+  errorCode: string;
+  errorTitle: string;
+  errorDescription: string;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 </script>
 
 <template>
