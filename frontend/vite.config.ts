@@ -8,6 +8,7 @@ import { defineConfig } from "vite";
 import Pages from "vite-plugin-pages";
 import Layouts from "vite-plugin-vue-layouts";
 import vuetify from "vite-plugin-vuetify";
+import { chunkSplitPlugin } from "vite-plugin-chunk-split";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -28,14 +29,18 @@ export default defineConfig({
       dts: true,
     }),
     AutoImport({
-      imports: ["vue", "vue-router", "@vueuse/core", "vue-i18n"],
+      imports: ["vue", "vue-router", "@vueuse/core"],
       vueTemplate: true,
+    }),
+    chunkSplitPlugin({
+      strategy: "default",
     }),
     DefineOptions(),
   ],
   define: {
     "process.env": {
       BACKEND_URL: "https://stocks-visualizer.com",
+      NODE_ENV: "production",
     },
   },
   resolve: {
@@ -49,14 +54,29 @@ export default defineConfig({
       "@configured-variables": fileURLToPath(
         new URL("./src/styles/variables/_template.scss", import.meta.url)
       ),
-      "@axios": fileURLToPath(new URL("./src/plugins/axios", import.meta.url)),
-      apexcharts: fileURLToPath(
-        new URL("node_modules/apexcharts-clevision", import.meta.url)
-      ),
     },
   },
   build: {
-    chunkSizeWarningLimit: 5000,
+    chunkSizeWarningLimit: 500,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            return id
+              .toString()
+              .split("node_modules/")[1]
+              .split("/")[0]
+              .toString();
+          }
+        },
+      },
+    },
+    minify: "terser",
+    terserOptions: {
+      output: {
+        comments: false, // This will remove all comments from the output files
+      },
+    },
   },
   optimizeDeps: {
     exclude: ["vuetify"],
