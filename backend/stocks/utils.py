@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from typing import Literal
 import pandas as pd
 import numpy as np
@@ -6,10 +7,44 @@ from stocks.types import Timespan
 TRADING_DAYS = 252
 
 
+def timespan_to_days(timespan: Timespan) -> int:
+    mapping = {
+        '1y': 365,
+        '3y': 3 * 365,
+        '5y': 5 * 365,
+        'max': 10 * 365  # Example: 10 years for 'max', adjust as needed
+    }
+    return mapping[timespan]
+
+
+class AlphaVantageMockCalls:
+
+    @staticmethod
+    def get_daily_adjusted(days: int):
+        # Create a sample DataFrame for the past year with daily frequency
+        end_date = datetime.today()
+        start_date = end_date - timedelta(days=days)
+        dates = pd.date_range(
+            start=start_date, end=end_date, freq='B')  # Business days
+
+        # Generate random prices for the 'adjusted_close' column
+        #  np.random.seed(0)
+        prices = np.random.uniform(low=100, high=200, size=len(dates))
+
+        # Creating the DataFrame
+        sample_data = pd.DataFrame({
+            'timestamp': dates,
+            'adjusted_close': prices
+        })
+
+        sample_csv_response = sample_data.to_csv(index=False)
+
+        return sample_csv_response
+
+
 class StocksInfoParser:
 
     def parse(self, dataframe: pd.DataFrame, timeperiod: Timespan):
-
         dataframe['timestamp_index'] = pd.to_datetime(dataframe['timestamp'])
         dataframe = dataframe.set_index('timestamp_index')
         dataframe.sort_values(by="timestamp_index",
@@ -21,8 +56,8 @@ class StocksInfoParser:
                 max_daily_return, min_daily_return = self.calculate_data(
                     dataframe)
         elif timeperiod == '5y':
-            sortino_ratio, sharpe_ratio, cumulative_returns,\
-                annualized_volatility, annualized_return, max_drawdown,\
+            sortino_ratio, sharpe_ratio, cumulative_returns, \
+                annualized_volatility, annualized_return, max_drawdown, \
                 max_daily_return, min_daily_return = self.calculate_data(
                     dataframe.last("50M"))
         elif timeperiod == '1y':

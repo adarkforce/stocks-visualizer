@@ -1,7 +1,8 @@
+from io import StringIO
 from django.http import HttpResponse, HttpRequest, HttpResponseBadRequest
 import simplejson
 from stocks.types import Timespan
-from stocks.utils import StocksInfoParser
+from stocks.utils import AlphaVantageMockCalls, StocksInfoParser, timespan_to_days
 from stocks.env import ALPHA_VANTAGE_API_KEY
 import pandas as pd
 from django.views.decorators.cache import cache_page
@@ -28,9 +29,17 @@ def stocks_infos(request: HttpRequest):
         timeperiod = 'max'
     if stock is None:
         return HttpResponseBadRequest('stock is required')
-    req_str = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&datatype=csv&symbol={quote(stock)}&apikey={ALPHA_VANTAGE_API_KEY}'
-    dataframe = pd.read_csv(req_str)
-    parser = StocksInfoParser()
 
-    responseObj = parser.parse(dataframe, timeperiod)
+    try:
+        req_str = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&datatype=csv&symbol={quote(stock)}&apikey={ALPHA_VANTAGE_API_KEY}'
+        dataframe = pd.read_csv(req_str)
+        parser = StocksInfoParser()
+        responseObj = parser.parse(dataframe, timeperiod)
+    except:
+        csv_handle = StringIO(AlphaVantageMockCalls.get_daily_adjusted(
+            timespan_to_days(timeperiod)))
+        dataframe = pd.read_csv(csv_handle)
+        parser = StocksInfoParser()
+        responseObj = parser.parse(dataframe, timeperiod)
+
     return HttpResponse(simplejson.dumps((responseObj), ignore_nan=True), content_type="application/json")
